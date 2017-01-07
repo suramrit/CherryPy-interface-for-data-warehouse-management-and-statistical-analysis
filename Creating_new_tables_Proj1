@@ -1,0 +1,98 @@
+#-----------Clinical Data Space---------------
+#used clinical_fact
+#Daignosis Table::
+
+insert into Diagnosis select p_id, ds_id,sympton, ds_from_date, ds_to_date from clinical_fact 
+where (ds_id or sympton or ds_from_date or ds_to_date) is not null;
+
+#Drug Use::
+select dr_id,dosage,dr_from_date,dr_to_date from clinical_fact
+where (dr_id,dosage or dr_from_date or dr_to_date) is not null;
+
+#TestResult:: 
+select tt_id,p_id,result,tt_date from clinical_fact where
+(tt_id or result or tt_date) is not null;
+
+#ClinicalSample
+select count(p_id) from clinical_fact 
+where s_id is not null;
+select count(s_id) from sample;
+select count(p_id) from patient;
+
+#sample
+select sam.s_id, fact.p_id, sam.source, sam.amount, sam.sp_date from sample sam
+left outer join clinical_fact fact on sam.s_id=fact.s_id;
+
+#----------Sample Data Space----------------------
+#used sample_fact
+#GenticScreen
+select s_id, mk_id,mk_result,mk_date from sample_fact
+where(mk_id or mk_result or mk_date) is not null;
+#all should not be null==Test
+INSERT INTO `proj1`.`sample_fact`
+(`s_id`,
+`mk_id`,
+`mk_result`)
+VALUES
+(55,
+66,
+null);
+#AssayResult
+select as_id,s_id,as_result,as_date from sample_fact
+where(as_id or as_result or as_date) is not null;
+#SampleAnatomy
+select tm_id,s_id,tm_description from sample_fact
+where(tm_id or tm_description) is not null;
+
+#-----------Experiment Data Space---------------------
+#NOTE: EXPERIMENT FACT SHOULD REMAIN AS IT IS... 
+#used: experiment_fact
+#project
+select p.pj_id,e.e_id,p.`name`,p.investigator,p.description from project p 
+left outer join experiment_fact e on e.pj_id=p.pj_id; 
+#test::
+select count(distinct p.pj_id) from project p 
+left outer join experiment_fact e on e.pj_id=p.pj_id; 
+
+#platform
+select p.pf_id, e.e_id, p.hardware, p.software, p.settings, p.description from platform p
+left outer join experiment_fact e on e.pf_id = p.pf_id;
+
+#norm
+select n.nm_id,e.e_id,n.`type`,n.software,n.parameters,n.description from norm n
+left outer join experiment_fact e on e.nm_id = n.nm_id;
+
+#protocal
+select p.pt_id, e.e_id, p.`name`, p.`text`, p.createdBy from protocal p
+left outer join experiment_fact e on e.pt_id = p.pt_id;
+
+#ExperimentPub
+select pu_id,e_id from experiment_fact
+where (pu_id) is not null;
+
+#ExperimentPer
+select pn_id,e_id from experiment_fact
+where (pn_id) is not null;
+
+#------------MicroArray Data Space-------------------
+#used microarray_fact
+
+#---MicroArray Already covered above
+
+#---------------Gene Data Space---------------------
+#used gene_fact
+#GOAnnotation::
+select go_id, UID from gene_fact where go_id is not null;
+
+#GeneCluster::
+select cl_id,UID from gene_fact where cl_id is not null;
+
+#GeneDomain::
+select dm_id,UID from gene_fact where dm_id is not null;
+
+#Gene Promoter
+select pm_id, UID from gene_fact where pm_id is not null;
+
+#Protien Interact
+select UID,UID2 from gene_fact where UID2 is not null;
+

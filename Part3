@@ -1,0 +1,19 @@
+#Part3-----------------------------------
+
+#Sample1 : Patients with ALL
+
+select * from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ds.`name` ='ALL';
+
+
+select distinct * from microarray_fact maf inner join
+(probe pb,gene gn,disease ds, Diagnosis dg, sample s) on
+(dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id and pb.UID=gn.UID)
+where ds.`name` = 'ALL';
+
+select gene.name from microarray_fact maf inner join
+(probe pb,gene gn,disease ds, Diagnosis dg, sample s) on
+(dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id and pb.UID=gn.UID)
+where ds.`name` != 'ALL';

@@ -1,0 +1,14 @@
+use proj1;
+#Query1
+select count(distinct p_id) from clinical_fact where ds_id in (select ds_id from disease where type='leukemia');
+select count(distinct p_id) from clinical_fact where ds_id in (select ds_id from disease where description='tumor');
+select count(distinct p_id) from clinical_fact where ds_id in (select ds_id from disease where name='ALL');
+#Query2
+select distinct `type` from drug where dr_id in (select distinct(dr_id) from clinical_fact where ds_id in (select ds_id from disease where description='tumor'));
+#Query2 -- Join Equivalent
+select * from clinical_fact cf INNER JOIN disease ds ON cf.`ds_id`=ds.`ds_id` INNER JOIN drug dr ON dr.dr_id=cf.dr_id;
+select distinct drug.`type` from (clinical_fact inner join (disease,drug) on (clinical_fact.ds_id=disease.ds_id and clinical_fact.dr_id=drug.dr_id)) where disease.description="tumor";
+#Query 3:
+select p_id,`name` from clinical_fact cf inner join disease ds on cf.ds_id=ds.ds_id where `name` = "All";
+
+

@@ -1,0 +1,59 @@
+use BioStar;
+select * from Diagnosis;
+#query3 
+SELECT  * from microarray_fact mic INNER JOIN (probe pb, GeneCluster gc, disease ds, Diagnosis d, sample s) 
+ON (mic.pb_id=pb.pb_id and pb.UID=gc.UID and d.`ds_id`=ds.`ds_id` and d.p_id=s.p_id and mic.s_id=s.s_id) 
+WHERE ds.`name`="ALL" and gc.cl_id="00002" and mic.`mu_id`="001";
+
+#Query4::-------------
+#Sample 1::
+select maf.exp from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0012502 and ds.`name` ='ALL';
+
+#Sample 2::
+select maf.exp from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0012502 and ds.`name` !='ALL';
+
+#Query5::--------------
+#Sample `ALL`
+select maf.exp from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0007154 and ds.`name` ='ALL';
+
+#Sample `AML`
+select maf.exp from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0007154 and ds.`name` ='AML';
+
+#Sample `colon tumor`
+select maf.exp from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0007154 and ds.`name` ='colon tumor';
+
+#Sample `breast tumor`
+select maf.exp from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0007154 and ds.`name` ='breast tumor';
+
+#Query6::--------------------
+#NOTE:: Not sure on selecting One AML and one ALL patient..
+
+#Sample `ALL`
+select s.p_id,maf.exp from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0007154 and ds.`name` ='ALL';
+
+#Sample `AML`
+select s.p_id,maf.exp,maf.e_id from GOAnnotation ga inner join 
+(probe pb,Diagnosis dg,disease ds, microarray_fact maf, sample s) on 
+(ga.uid = pb.UID and dg.ds_id= ds.ds_id and maf.pb_id=pb.pb_id and dg.p_id=s.p_id and maf.s_id= s.s_id) 
+where ga.go_id = 0007154 and ds.`name` ='AML';
